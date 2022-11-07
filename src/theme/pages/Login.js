@@ -31,7 +31,7 @@ const LoginStyle = styled.main`
 
     display: grid;
 
-    gap: 1.6rem 0;
+    gap: 2rem 0;
   }
 `;
 

@@ -1,72 +1,34 @@
 import React, { useState } from "react";
 
-import { Box, Button } from "@mui/material";
+// import { Box, Button } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 
-import { DownOutlined } from "@ant-design/icons";
-import { Form, Radio, Space, Switch, Table } from "antd";
+import { DownOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import {
+  Form,
+  Radio,
+  Space,
+  Switch,
+  Table,
+  Button,
+  Dropdown,
+  Avatar,
+  Modal,
+  Descriptions,
+} from "antd";
 import HomeStyled from "../theme/pages/Home";
 
 import { Breadcrumb, Layout, Menu } from "antd";
+
+import { FaUserCircle, FaEdit, FaUser, FaTrash } from "react-icons/fa";
+
 const { Header, Content, Footer } = Layout;
 
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    sorter: (a, b) => a.age - b.age,
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    filters: [
-      {
-        text: "London",
-        value: "London",
-      },
-      {
-        text: "New York",
-        value: "New York",
-      },
-    ],
-    onFilter: (value, record) => record.address.indexOf(value) === 0,
-  },
-  {
-    title: "Action",
-    key: "action",
-    sorter: true,
-    render: () => (
-      <Space size="middle">
-        <a>Delete</a>
-        <a>
-          <Space>
-            More actions
-            <DownOutlined />
-          </Space>
-        </a>
-      </Space>
-    ),
-  },
-];
-const data = [];
-for (let i = 1; i <= 10; i++) {
-  data.push({
-    key: i,
-    name: "John Brown",
-    age: Number(`${i}2`),
-    address: `New York No. ${i} Lake Park`,
-    description: `My name is John Brown, I am ${i}2 years old, living in New York No. ${i} Lake Park.`,
-  });
-}
 const defaultExpandable = {
   expandedRowRender: (record) => <p>{record.description}</p>,
 };
-const defaultTitle = () => "Here is title";
+const defaultTitle = () => "List all students";
 const defaultFooter = () => "Here is footer";
 
 const Home = () => {
@@ -76,11 +38,86 @@ const Home = () => {
     navigate("/login");
   };
 
-  const [bordered, setBordered] = useState(false);
+  const confirm = () => {
+    Modal.confirm({
+      title: "Confirm",
+      icon: <ExclamationCircleOutlined />,
+      content: "Are you sure ?",
+      okText: "Delete",
+      cancelText: "Cancel",
+    });
+  };
+
+  const columns = [
+    {
+      title: "ID Card",
+      dataIndex: "idCard",
+      sorter: (a, b) => a.age - b.age,
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: "Major",
+      dataIndex: "major",
+      filters: [
+        {
+          text: "Information Technology",
+          value: "it",
+        },
+        {
+          text: "QTKD",
+          value: "qtkd",
+        },
+      ],
+      onFilter: (value, record) => record.address.indexOf(value) === 0,
+    },
+    {
+      title: "Khoa",
+      dataIndex: "khoa",
+      filters: [
+        {
+          text: "Information Technology",
+          value: "it",
+        },
+        {
+          text: "QTKD",
+          value: "qtkd",
+        },
+      ],
+      onFilter: (value, record) => record.address.indexOf(value) === 0,
+    },
+    {
+      title: "Action",
+      key: "action",
+      sorter: true,
+      render: () => (
+        <Space size="middle">
+          <Button icon={<FaUser></FaUser>} onClick={showModalDetail}></Button>
+          <Button icon={<FaEdit></FaEdit>}></Button>
+          <Button icon={<FaTrash></FaTrash>} onClick={confirm}></Button>
+        </Space>
+      ),
+    },
+  ];
+  const data = [];
+  for (let i = 1; i <= 40; i++) {
+    data.push({
+      key: i,
+      idCard: `ID ${i}`,
+      name: "John Brown",
+      major: "Information Technology",
+      khoa: "23",
+      description: `My name is John Brown, I am ${i}2 years old, living in New York No. ${i} Lake Park.`,
+    });
+  }
+
+  const [bordered, setBordered] = useState(true);
   const [loading, setLoading] = useState(false);
   const [size, setSize] = useState("large");
   const [expandable, setExpandable] = useState(defaultExpandable);
-  const [showTitle, setShowTitle] = useState(false);
+  const [showTitle, setShowTitle] = useState(true);
   const [showHeader, setShowHeader] = useState(true);
   const [showfooter, setShowFooter] = useState(true);
   const [rowSelection, setRowSelection] = useState({});
@@ -158,6 +195,68 @@ const Home = () => {
     tableLayout,
   };
 
+  const items = [
+    {
+      key: "1",
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.antgroup.com"
+        >
+          1st menu item
+        </a>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.aliyun.com"
+        >
+          2nd menu item
+        </a>
+      ),
+    },
+    {
+      key: "3",
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.luohanacademy.com"
+        >
+          3rd menu item
+        </a>
+      ),
+    },
+  ];
+
+  // show modal detail
+  const [isModalDetailOpen, setIsModalDetailOpen] = useState(false);
+  const showModalDetail = () => {
+    setIsModalDetailOpen(true);
+  };
+  const handleDetailOk = () => {
+    setIsModalDetailOpen(false);
+  };
+  const handleDetailCancel = () => {
+    setIsModalDetailOpen(false);
+  };
+
+  // show modal delete
+  const [openDelete, setOpenDelete] = useState(false);
+
+  const showModalDelete = () => {
+    setOpenDelete(true);
+  };
+
+  const hideModalDelete = () => {
+    setOpenDelete(false);
+  };
+
   return (
     <HomeStyled>
       <Layout>
@@ -166,6 +265,10 @@ const Home = () => {
             position: "fixed",
             zIndex: 1,
             width: "100%",
+
+            display: "grid",
+            gridTemplateColumns: "min-content 1fr max-content",
+            alignItems: "center",
             // backgroundColor: "var(--color-secondary)",
           }}
         >
@@ -175,11 +278,24 @@ const Home = () => {
             // style={{ backgroundColor: "var(--color-secondary)" }}
             mode="horizontal"
             defaultSelectedKeys={["2"]}
-            items={new Array(3).fill(null).map((_, index) => ({
-              key: String(index + 1),
-              label: `nav ${index + 1}`,
-            }))}
+            items={[
+              { key: 1, label: "Home" },
+              { key: 2, label: "About me" },
+            ]}
           />
+
+          <Dropdown
+            menu={{
+              items,
+            }}
+            placement="bottomRight"
+            arrow
+          >
+            <Avatar
+              style={{ backgroundColor: "#87d068" }}
+              icon={<FaUserCircle />}
+            />
+          </Dropdown>
         </Header>
         <Content
           className="site-layout"
@@ -200,109 +316,11 @@ const Home = () => {
           <div
             className="site-layout-background"
             style={{
-              padding: 24,
+              padding: 48,
               minHeight: 380,
             }}
           >
             <>
-              <Form
-                layout="inline"
-                className="components-table-demo-control-bar"
-                style={{
-                  marginBottom: 16,
-                }}
-              >
-                <Form.Item label="Bordered">
-                  <Switch checked={bordered} onChange={handleBorderChange} />
-                </Form.Item>
-                <Form.Item label="loading">
-                  <Switch checked={loading} onChange={handleLoadingChange} />
-                </Form.Item>
-                <Form.Item label="Title">
-                  <Switch checked={showTitle} onChange={handleTitleChange} />
-                </Form.Item>
-                <Form.Item label="Column Header">
-                  <Switch checked={showHeader} onChange={handleHeaderChange} />
-                </Form.Item>
-                <Form.Item label="Footer">
-                  <Switch checked={showfooter} onChange={handleFooterChange} />
-                </Form.Item>
-                <Form.Item label="Expandable">
-                  <Switch
-                    checked={!!expandable}
-                    onChange={handleExpandChange}
-                  />
-                </Form.Item>
-                <Form.Item label="Checkbox">
-                  <Switch
-                    checked={!!rowSelection}
-                    onChange={handleRowSelectionChange}
-                  />
-                </Form.Item>
-                <Form.Item label="Fixed Header">
-                  <Switch checked={!!yScroll} onChange={handleYScrollChange} />
-                </Form.Item>
-                <Form.Item label="Has Data">
-                  <Switch checked={!!hasData} onChange={handleDataChange} />
-                </Form.Item>
-                <Form.Item label="Ellipsis">
-                  <Switch
-                    checked={!!ellipsis}
-                    onChange={handleEllipsisChange}
-                  />
-                </Form.Item>
-                <Form.Item label="Size">
-                  <Radio.Group value={size} onChange={handleSizeChange}>
-                    <Radio.Button value="large">Large</Radio.Button>
-                    <Radio.Button value="middle">Middle</Radio.Button>
-                    <Radio.Button value="small">Small</Radio.Button>
-                  </Radio.Group>
-                </Form.Item>
-                <Form.Item label="Table Scroll">
-                  <Radio.Group value={xScroll} onChange={handleXScrollChange}>
-                    <Radio.Button value={undefined}>Unset</Radio.Button>
-                    <Radio.Button value="scroll">Scroll</Radio.Button>
-                    <Radio.Button value="fixed">Fixed Columns</Radio.Button>
-                  </Radio.Group>
-                </Form.Item>
-                <Form.Item label="Table Layout">
-                  <Radio.Group
-                    value={tableLayout}
-                    onChange={handleTableLayoutChange}
-                  >
-                    <Radio.Button value={undefined}>Unset</Radio.Button>
-                    <Radio.Button value="fixed">Fixed</Radio.Button>
-                  </Radio.Group>
-                </Form.Item>
-                <Form.Item label="Pagination Top">
-                  <Radio.Group
-                    value={top}
-                    onChange={(e) => {
-                      setTop(e.target.value);
-                    }}
-                  >
-                    <Radio.Button value="topLeft">TopLeft</Radio.Button>
-                    <Radio.Button value="topCenter">TopCenter</Radio.Button>
-                    <Radio.Button value="topRight">TopRight</Radio.Button>
-                    <Radio.Button value="none">None</Radio.Button>
-                  </Radio.Group>
-                </Form.Item>
-                <Form.Item label="Pagination Bottom">
-                  <Radio.Group
-                    value={bottom}
-                    onChange={(e) => {
-                      setBottom(e.target.value);
-                    }}
-                  >
-                    <Radio.Button value="bottomLeft">BottomLeft</Radio.Button>
-                    <Radio.Button value="bottomCenter">
-                      BottomCenter
-                    </Radio.Button>
-                    <Radio.Button value="bottomRight">BottomRight</Radio.Button>
-                    <Radio.Button value="none">None</Radio.Button>
-                  </Radio.Group>
-                </Form.Item>
-              </Form>
               <Table
                 {...tableProps}
                 pagination={{
@@ -322,6 +340,41 @@ const Home = () => {
         >
           Midterm demo
         </Footer>
+
+        <Modal
+          title="Detail"
+          open={isModalDetailOpen}
+          onOk={handleDetailOk}
+          onCancel={handleDetailCancel}
+          centered
+          width={600}
+          // height={600}
+        >
+          <Descriptions title="User Info" layout="vertical">
+            <Descriptions.Item label="UserName">Zhou Maomao</Descriptions.Item>
+            <Descriptions.Item label="Telephone">1810000000</Descriptions.Item>
+            <Descriptions.Item label="Live">
+              Hangzhou, Zhejiang
+            </Descriptions.Item>
+            <Descriptions.Item label="Remark">empty</Descriptions.Item>
+            <Descriptions.Item label="Address">
+              No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+            </Descriptions.Item>
+          </Descriptions>
+        </Modal>
+        <Modal
+          title="Delete"
+          open={openDelete}
+          onOk={hideModalDelete}
+          onCancel={hideModalDelete}
+          okText="Delete"
+          cancelText="Cancel"
+          centered
+        >
+          <p>Bla bla ...</p>
+          <p>Bla bla ...</p>
+          <p>Bla bla ...</p>
+        </Modal>
       </Layout>
     </HomeStyled>
   );

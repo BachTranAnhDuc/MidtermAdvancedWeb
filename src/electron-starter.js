@@ -24,19 +24,8 @@ const start = async () => {
 }
 
 start()
-const { ipcMain } = require("electron");
 
-ipcMain.on("user:login", async(event, data) => {
-  console.log(data)
-  const checkUser = await User.findOne({username: data.username})
-  if(checkUser == null || checkUser == undefined) {
-    return console.log("Not exists")
-  }
-  const isMatch = await User.comparePassword(data.password)
-  if(!isMatch)
-    return console.log("Password is not correct")
-  console.log("Login success")
-})
+
 
 function createWindow() {
   // Create the browser window.
@@ -61,6 +50,25 @@ function createWindow() {
     mainWindow = null;
   });
 }
+
+
+// LOGIN 
+const { ipcMain } = require("electron");
+
+// listen event login get data from channel user:login
+ipcMain.on("user:login", async(event, data) => {
+  console.log(data)
+  const checkUser = await User.findOne({username: data.username})
+  if(checkUser == null || checkUser == undefined) {
+    return console.log("Not exists")
+  }
+  console.log(checkUser)
+  const isMatch = await checkUser.comparePassword(data.password)
+  if(!isMatch)
+    return console.log("Password is not correct")
+  console.log("Login success")
+  mainWindow.loadURL("http://localhost:3000/")
+})
 
 
 // This method will be called when Electron has finished

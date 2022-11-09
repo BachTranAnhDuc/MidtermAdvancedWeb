@@ -38,7 +38,7 @@ function createWindow() {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadURL("http://localhost:3000");
+  mainWindow.loadURL("http://localhost:3000/login");
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
@@ -67,7 +67,7 @@ ipcMain.on("user:login", async(event, data) => {
   if(!isMatch)
     return console.log("Password is not correct")
   console.log("Login success")
-  mainWindow.loadURL("http://localhost:3000/")
+  mainWindow.loadURL("http://localhost:3000/") // after login success redirect to homepage
 })
 
 

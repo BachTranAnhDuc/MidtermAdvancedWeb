@@ -3,17 +3,47 @@ const electron = require("electron");
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
-
 const path = require("path");
 const url = require("url");
-
+const connectDB = require('./db/connect')
+const dotenv = require('dotenv')
+dotenv.config();
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
+const User = require('./model/user')
 let mainWindow;
+
+
+const start = async () => {
+  try{
+    await connectDB(process.env.MONGO_URI)
+  }
+  catch(error){
+    console.log(`Something went wrong! ${error}`);
+  }
+}
+
+start()
+const { ipcMain } = require("electron");
+
+ipcMain.on("user:login", async(event, data) => {
+  console.log(data)
+  const checkUser = await User.findOne({username: data.username})
+  if(checkUser == null || checkUser == undefined) {
+    console.log("Not exists")
+  }
+  
+})
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 800, height: 600 });
+  mainWindow = new BrowserWindow({ 
+    width: 800,
+    height: 600,
+    webPreferences: {
+      preload: path.join(__dirname, "login.js"),
+    }
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL("http://localhost:3000");
@@ -29,6 +59,7 @@ function createWindow() {
     mainWindow = null;
   });
 }
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -54,3 +85,4 @@ app.on("activate", function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+

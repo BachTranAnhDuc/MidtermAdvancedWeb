@@ -159,10 +159,11 @@ const MUIButtonCustom01 = styled(Button)(({ theme }) => ({
   },
 }));
 const MUIButtonCustom02 = styled(MUIButtonCustom01)(({ theme }) => ({
-  color: theme.palette.getContrastText(purple[500]),
-  backgroundColor: "var(--color-primary)",
+  // color: theme.palette.getContrastText(purple[500]),
+  // color: "var(--color-primary)",
+  backgroundColor: "var(--color-secondary-light-9)",
   "&:hover": {
-    backgroundColor: "var(--color-primary-dark-1)",
+    backgroundColor: "var(--color-secondary-dark-2)",
   },
   padding: "1.2rem 2.4rem",
   fontSize: "1.2rem",

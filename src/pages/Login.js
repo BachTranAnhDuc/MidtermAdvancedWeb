@@ -42,13 +42,28 @@ import { Link } from "react-router-dom";
 
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
+import { red } from "@mui/material/colors";
+
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
+  const navigate = useNavigate();
+
   const setCloseAlertLogin = () => {};
 
   const handleClickShowPassword = () => {};
 
   const handleMouseDownPassword = () => {};
+
+  const validateUsername = (value) => {
+    let error;
+    if (value === "admin") {
+      error = "Nice try!";
+    }
+    return error;
+  };
 
   return (
     <LoginStyle>
@@ -76,7 +91,13 @@ const Login = () => {
         >
           {(props) => (
             <Form onSubmit={props.handleSubmit} className="login__form">
-              <h1 className="login-heading">Login</h1>
+              <HeadingPrimary
+                className="login-heading"
+                inputColor="var(--color-secondary)"
+                inputSize="2.8rem"
+              >
+                Login
+              </HeadingPrimary>
               <div className="login__form--alert-container">
                 <Alert
                   severity="error"
@@ -98,7 +119,7 @@ const Login = () => {
                   Your account is blocked <strong>forever</strong>
                 </Alert>
               </div>
-              <Field name="username">
+              <Field name="username" validate={validateUsername}>
                 {({ field, form, meta }) => (
                   <FormControl>
                     <MUIInputCustom02
@@ -121,7 +142,7 @@ const Login = () => {
                       id="component-helper-text"
                       sx={{
                         fontSize: "1.2rem",
-                        color: "var(--color-tertiary-dark-2)",
+                        color: `${red[500]}`,
                       }}
                     >
                       {props.touched.username && props.errors.username}
@@ -170,7 +191,7 @@ const Login = () => {
                       id="component-helper-text"
                       sx={{
                         fontSize: "1.2rem",
-                        color: "var(--color-tertiary-dark-2)",
+                        color: `${red[500]}`,
                       }}
                     >
                       {props.touched.password && props.errors.password}
@@ -198,13 +219,16 @@ const Login = () => {
                 </MUIButtonCustom02>
               )} */}
 
-              <MUIButtonCustom04
+              <MUIButtonCustom02
                 variant="contained"
                 type="submit"
                 // disabled={isCountDown}
+                onClick={() => {
+                  navigate("/");
+                }}
               >
                 Login
-              </MUIButtonCustom04>
+              </MUIButtonCustom02>
 
               <Box
                 sx={{
@@ -238,7 +262,12 @@ const Login = () => {
 
                 <Box sx={{ justifySelf: "end" }}>
                   <InputLabel>
-                    <Link to={"/forgot-password"}>Forgot password</Link>
+                    <Link
+                      to={"/forgot-password"}
+                      style={{ color: "var(--color-primary)" }}
+                    >
+                      Forgot password
+                    </Link>
                   </InputLabel>
                 </Box>
               </Box>

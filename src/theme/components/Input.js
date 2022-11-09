@@ -37,7 +37,7 @@ const MUIInputCustom01 = styled(TextField)({
 
 const MUIInputCustom02 = styled(TextField)({
   "& label.Mui-focused": {
-    color: "green",
+    color: "var(--color-secondary)",
     fontSize: "1.4rem",
     letterSpacing: "0.1rem",
   },

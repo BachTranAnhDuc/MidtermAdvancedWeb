@@ -30,9 +30,12 @@ ipcMain.on("user:login", async(event, data) => {
   console.log(data)
   const checkUser = await User.findOne({username: data.username})
   if(checkUser == null || checkUser == undefined) {
-    console.log("Not exists")
+    return console.log("Not exists")
   }
-  
+  const isMatch = await User.comparePassword(data.password)
+  if(!isMatch)
+    return console.log("Password is not correct")
+  console.log("Login success")
 })
 
 function createWindow() {
@@ -50,7 +53,6 @@ function createWindow() {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
-
   // Emitted when the window is closed.
   mainWindow.on("closed", function () {
     // Dereference the window object, usually you would store windows

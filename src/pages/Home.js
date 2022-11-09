@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 // import { Box, Button } from "@mui/material";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { DownOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import {
@@ -57,6 +57,20 @@ const Home = () => {
     {
       title: "Name",
       dataIndex: "name",
+      filters: [
+        {
+          text: "Information Technology",
+          value: "it",
+        },
+        {
+          text: "QTKD",
+          value: "qtkd",
+        },
+      ],
+
+      onFilter: (value, record) => record.name.startsWith(value),
+      filterSearch: true,
+      width: "40%",
     },
     {
       title: "Major",
@@ -222,15 +236,7 @@ const Home = () => {
     },
     {
       key: "3",
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.luohanacademy.com"
-        >
-          3rd menu item
-        </a>
-      ),
+      label: <Link to={"/login"}>Logout</Link>,
     },
   ];
 

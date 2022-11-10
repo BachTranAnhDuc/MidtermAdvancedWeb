@@ -28,7 +28,7 @@ const AppProvider = ({children}) =>{
         }
     }
 
-    return (<AppContext.Provider value={{...state}}>
+    return (<AppContext.Provider value={{...state,getAllStudent}}>
         {children}
         </AppContext.Provider>)
 }

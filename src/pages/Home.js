@@ -112,7 +112,12 @@ const Home = () => {
       render: () => (
         <Space size="middle">
           <Button icon={<FaUser></FaUser>} onClick={showModalDetail}></Button>
-          <Button icon={<FaEdit></FaEdit>}></Button>
+          <Button
+            icon={<FaEdit></FaEdit>}
+            onClick={() => {
+              showModalEdit();
+            }}
+          ></Button>
           <Button icon={<FaTrash></FaTrash>} onClick={confirm}></Button>
         </Space>
       ),
@@ -257,6 +262,17 @@ const Home = () => {
   const handleDetailCancel = () => {
     setIsModalDetailOpen(false);
   };
+  // show modal edot
+  const [isModaEditOpen, setIsModalEditOpen] = useState(false);
+  const showModalEdit = () => {
+    setIsModalEditOpen(true);
+  };
+  const handleEditOk = () => {
+    setIsModalEditOpen(false);
+  };
+  const handleEditCancel = () => {
+    setIsModalEditOpen(false);
+  };
 
   // show modal delete
   const [openDelete, setOpenDelete] = useState(false);
@@ -363,12 +379,45 @@ const Home = () => {
           // height={600}
         >
           <Descriptions title="User Info" layout="vertical">
-            <Descriptions.Item label="UserName">Zhou Maomao</Descriptions.Item>
-            <Descriptions.Item label="Telephone">1810000000</Descriptions.Item>
-            <Descriptions.Item label="Live">
-              Hangzhou, Zhejiang
+            <Descriptions.Item label="Id">51900313</Descriptions.Item>
+            <Descriptions.Item label="UserName">
+              Bach Tran Anh Duc
             </Descriptions.Item>
-            <Descriptions.Item label="Remark">empty</Descriptions.Item>
+            <Descriptions.Item label="Major">
+              Information Technology
+            </Descriptions.Item>
+            <Descriptions.Item label="Khoa">23</Descriptions.Item>
+            <Descriptions.Item label="Telephone">1810000000</Descriptions.Item>
+            <Descriptions.Item label="Email">
+              anhduc@gmail.com
+            </Descriptions.Item>
+            <Descriptions.Item label="Address">
+              No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+            </Descriptions.Item>
+          </Descriptions>
+        </Modal>
+        <Modal
+          title="Edit"
+          open={isModaEditOpen}
+          onOk={handleEditOk}
+          onCancel={handleEditCancel}
+          centered
+          width={600}
+          // height={600}
+        >
+          <Descriptions title="User Info" layout="vertical">
+            <Descriptions.Item label="Id">51900313</Descriptions.Item>
+            <Descriptions.Item label="UserName">
+              Bach Tran Anh Duc
+            </Descriptions.Item>
+            <Descriptions.Item label="Major">
+              Information Technology
+            </Descriptions.Item>
+            <Descriptions.Item label="Khoa">23</Descriptions.Item>
+            <Descriptions.Item label="Telephone">1810000000</Descriptions.Item>
+            <Descriptions.Item label="Email">
+              anhduc@gmail.com
+            </Descriptions.Item>
             <Descriptions.Item label="Address">
               No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
             </Descriptions.Item>

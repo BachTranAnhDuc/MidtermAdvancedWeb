@@ -51,11 +51,11 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const setCloseAlertLogin = () => {};
+  const setCloseAlertLogin = () => { };
 
-  const handleClickShowPassword = () => {};
+  const handleClickShowPassword = () => { };
 
-  const handleMouseDownPassword = () => {};
+  const handleMouseDownPassword = () => { };
 
   const validateUsername = (value) => {
     let error;
@@ -72,7 +72,14 @@ const Login = () => {
           initialValues={{ username: "", password: "" }}
           // validationSchema={validationSchema}
           onSubmit={async (values, actions) => {
-            console.log(values);
+            console.log("Form submit")
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const data = {
+              username: username,
+              password: password,
+            };
+            window.electron.login(data);
             // login(
             //   {
             //     username: values.username,
@@ -127,10 +134,10 @@ const Login = () => {
                         props.touched.username && Boolean(props.errors.username)
                       }
                       aria-describedby="component-helper-text"
-                      // disabled={isCountDown}
-                      // helperText={
-                      //   props.touched.username && props.errors.username
-                      // }
+                    // disabled={isCountDown}
+                    // helperText={
+                    //   props.touched.username && props.errors.username
+                    // }
                     />
                     <FormHelperText
                       id="component-helper-text"
@@ -218,7 +225,7 @@ const Login = () => {
                 type="submit"
                 // disabled={isCountDown}
                 onClick={() => {
-                  navigate("/");
+
                 }}
               >
                 Login

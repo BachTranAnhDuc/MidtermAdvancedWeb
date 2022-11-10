@@ -1,0 +1,1 @@
+export  const GET_ALL_USER = 'GET ALL USERS';

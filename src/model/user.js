@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         unique: true,
         required: [true, 'Please enter your username'],
-    },
+    }
 })
 
 UserSchema.methods.comparePassword = async function (inputPassword) {

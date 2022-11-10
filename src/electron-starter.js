@@ -12,7 +12,7 @@ dotenv.config();
 // be closed automatically when the JavaScript object is garbage collected.
 const User = require('./model/user')
 let mainWindow;
-
+const student = require('./model/student')
 
 const start = async () => {
   try{
@@ -36,7 +36,6 @@ function createWindow() {
       preload: path.join(__dirname, "login.js"),
     }
   });
-
   // and load the index.html of the app.
   mainWindow.loadURL("http://localhost:3000/login");
 

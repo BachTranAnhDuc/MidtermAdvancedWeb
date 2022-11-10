@@ -3,6 +3,7 @@ import React, { useState } from "react";
 // import { Box, Button } from "@mui/material";
 
 import { Link, useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../context/appContext";
 
 import { DownOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import {
@@ -23,6 +24,8 @@ import { Breadcrumb, Layout, Menu } from "antd";
 
 import { FaUserCircle, FaEdit, FaUser, FaTrash } from "react-icons/fa";
 
+import student from "../model/student";
+
 const { Header, Content, Footer } = Layout;
 
 const defaultExpandable = {
@@ -33,7 +36,7 @@ const defaultFooter = () => "Here is footer";
 
 const Home = () => {
   const navigate = useNavigate();
-
+  const {getAllStudent} = useGlobalContext()
   const handleLogout = () => {
     navigate("/login");
   };
@@ -116,16 +119,16 @@ const Home = () => {
     },
   ];
   const data = [];
-  for (let i = 1; i <= 40; i++) {
-    data.push({
-      key: i,
-      idCard: `ID ${i}`,
-      name: "John Brown",
-      major: "Information Technology",
-      khoa: "23",
-      description: `My name is John Brown, I am ${i}2 years old, living in New York No. ${i} Lake Park.`,
-    });
-  }
+  // for (let i = 1; i <= 40; i++) {
+  //   data.push({
+  //     key: i,
+  //     idCard: `ID ${i}`,
+  //     name: "John Brown",
+  //     major: "Information Technology",
+  //     khoa: "23",
+  //     description: `My name is John Brown, I am ${i}2 years old, living in New York No. ${i} Lake Park.`,
+  //   });
+  // }
 
   const [bordered, setBordered] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -213,13 +216,16 @@ const Home = () => {
     {
       key: "1",
       label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
-        >
-          1st menu item
-        </a>
+        // <a
+        //   target="_blank"
+        //   rel="noopener noreferrer"
+        //   href="https://www.antgroup.com"
+        // >
+        //   1st menu item
+        // </a>
+        <button onclick={()=>getAllStudent()}>
+          AAAAA
+        </button>
       ),
     },
     {

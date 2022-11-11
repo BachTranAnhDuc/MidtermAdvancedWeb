@@ -6,7 +6,6 @@ import student from "../model/student";
 import { useNavigate } from "react-router-dom";
 
 const defaultState = {
-  isLoading: false,
   user: [],
 };
 const AppContext = React.createContext();
@@ -16,27 +15,21 @@ const AppProvider = ({ children }) => {
 
   const getAllStudent = async () => {
     try {
-      const res = await student.find();
-      console.log(res);
-      dispatch({ type: GET_ALL_USER, payload: res });
+      const res = await axios.get("http://localhost:5000/getListUser");
+
+      const {data} = res;
+      const {msg, listUser} = data;
+      console.log(listUser);
+      dispatch({ type: GET_ALL_USER, payload: listUser });
     } catch (err) {
       console.log(err);
     }
   };
 
-<<<<<<< HEAD
     return (<AppContext.Provider value={{...state,getAllStudent}}>
         {children}
         </AppContext.Provider>)
 }
-=======
-  return (
-    <AppContext.Provider value={{ ...state, getAllStudent }}>
-      {children}
-    </AppContext.Provider>
-  );
-};
->>>>>>> ui
 
 const useGlobalContext = () => {
   return useContext(AppContext);

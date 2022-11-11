@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context/appContext";
 
-import { DownOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { ConsoleSqlOutlined, DownOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import {
   Form,
   Radio,
@@ -36,7 +36,9 @@ const defaultFooter = () => "Here is footer";
 
 const Home = () => {
   const navigate = useNavigate();
-  const {getAllStudent} = useGlobalContext()
+  const {getAllStudent, user} = useGlobalContext()
+  getAllStudent()
+  
   const handleLogout = () => {
     navigate("/login");
   };
@@ -123,7 +125,7 @@ const Home = () => {
       ),
     },
   ];
-  const data = [];
+  const data = user;
   // for (let i = 1; i <= 40; i++) {
   //   data.push({
   //     key: i,
@@ -228,9 +230,9 @@ const Home = () => {
         // >
         //   1st menu item
         // </a>
-        <button onclick={()=>getAllStudent()}>
+        <Button>
           AAAAA
-        </button>
+        </Button>
       ),
     },
     {

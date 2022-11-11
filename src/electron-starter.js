@@ -7,6 +7,7 @@ const path = require("path");
 const url = require("url");
 const connectDB = require('./db/connect')
 const dotenv = require('dotenv')
+const axios = require('axios')
 dotenv.config();
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -14,7 +15,7 @@ const User = require('./model/user')
 let mainWindow;
 const student = require('./model/student')
 
-const start = async () => {
+/* const start = async () => {
   try{
     await connectDB(process.env.MONGO_URI)
   }
@@ -23,22 +24,25 @@ const start = async () => {
   }
 }
 
-start()
+start() */
 
 
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ 
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
+      nodeIntegration: true,
       preload: path.join(__dirname, "login.js"),
     }
   });
   // and load the index.html of the app.
   mainWindow.loadURL("http://localhost:3000/login");
 
+
+  let server = require("./server/server")
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
   // Emitted when the window is closed.
@@ -55,21 +59,45 @@ function createWindow() {
 const { ipcMain } = require("electron");
 
 // listen event login get data from channel user:login
-ipcMain.on("user:login", async(event, data) => {
-  console.log(data)
-  const checkUser = await User.findOne({username: data.username})
-  if(checkUser == null || checkUser == undefined) {
-    return console.log("Not exists")
+ipcMain.on("user:login", async (event, data) => {
+  // console.log(data)
+  const checkLogin = await axios.post("http://localhost:5000/login",
+    {
+      username: data.username,
+      password: data.password
+    })
+  if(checkLogin.data.success === true) {
+    mainWindow.loadURL("http://localhost:3000/") // after login success redirect to homepage
   }
-  console.log(checkUser)
-  const isMatch = await checkUser.comparePassword(data.password)
-  if(!isMatch)
-    return console.log("Password is not correct")
-  console.log("Login success")
-  mainWindow.loadURL("http://localhost:3000/") // after login success redirect to homepage
+  else{
+    const msg = checkLogin.data.msg
+  }
+  // const checkUser = await User.findOne({username: data.username})
+  // if(checkUser == null || checkUser == undefined) {
+  //   return console.log("Not exists")
+  // }
+  // console.log(checkUser)
+  // const isMatch = await checkUser.comparePassword(data.password)
+  // if(!isMatch)
+  //   return console.log("Password is not correct")
+  // console.log("Login success")
 })
 
 
+// STUDENT
+//listen event create new student
+ipcMain.on("student:create", async (event, data) => {
+  console.log(data)
+  const postCreate = await axios.post("http://localhost:5000/addNewStudent", {
+    id: data.id,
+    name: data.name,
+    major: data.major,
+    age: data.age,
+    address: data.address,
+    phone: data.phone
+  })
+  return;
+})
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

@@ -21,6 +21,8 @@ import {
 
 import { MUIInputCustom01, MUIInputCustom02 } from "../theme/components/Input";
 
+import { useGlobalContext } from "../context/appContext";
+
 import {
   Box,
   Button,
@@ -50,10 +52,8 @@ import { useGlobalContext } from "../context/appContext";
 
 const Login = () => {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
-
+  const { getAllStudent } = useGlobalContext();
   const navigate = useNavigate();
-
-  const { user, getAllStudent } = useGlobalContext();
 
   const setCloseAlertLogin = () => {};
 
@@ -83,8 +83,8 @@ const Login = () => {
               username: username,
               password: password,
             };
-
             window.electron.login(data);
+
             // login(
             //   {
             //     username: values.username,

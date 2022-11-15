@@ -75,11 +75,13 @@ const Login = () => {
           // validationSchema={validationSchema}
           onSubmit={async (values, actions) => {
             console.log("Form submit");
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
+
+            // const username = document.getElementById("username").value;
+            // const password = document.getElementById("password").value;
+
             const data = {
-              username: username,
-              password: password,
+              username: values.username,
+              password: values.password,
             };
             window.electron.login(data);
 

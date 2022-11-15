@@ -21,6 +21,12 @@ const HomeStyled = styled.main`
     margin-bottom: 8px;
     margin-left: 8px;
   }
+
+  .edit__form {
+    display: grid;
+
+    grid-template-rows: repeat(2, max-content);
+  }
 `;
 
 export default HomeStyled;

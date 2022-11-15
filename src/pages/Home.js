@@ -11,7 +11,6 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import {
-  Form,
   Radio,
   Space,
   Switch,
@@ -28,7 +27,39 @@ import { Breadcrumb, Layout, Menu } from "antd";
 
 import { FaUserCircle, FaEdit, FaUser, FaTrash } from "react-icons/fa";
 
-import student from "../model/student";
+import { Formik, Form, Field, ErrorMessage, useFormik, useField } from "formik";
+
+import {
+  DefaultButton,
+  LoginButton,
+  Button83,
+  ContactButton,
+  DownloadButton,
+  MUIButtonCustom02,
+  MUIButtonCustom01,
+  MUIButtonCustom03,
+  MUIButtonCustom04,
+  MUIButtonLoading01,
+} from "../theme/components/Button";
+
+import { MUIInputCustom01, MUIInputCustom02 } from "../theme/components/Input";
+
+import {
+  Box,
+  InputLabel,
+  FormControl,
+  FormHelperText,
+  FormGroup,
+  FormControlLabel,
+  Alert,
+  AlertTitle,
+  IconButton,
+  InputAdornment,
+  Checkbox,
+} from "@mui/material";
+
+import { HeadingPrimary, DefaultParagraph } from "../theme/Typography";
+import { red } from "@mui/material/colors";
 
 const { Header, Content, Footer } = Layout;
 
@@ -277,6 +308,18 @@ const Home = () => {
     setIsModalEditOpen(false);
   };
 
+  // show modal add
+  const [isModaAddOpen, setIsModalAddOpen] = useState(false);
+  const showModalAdd = () => {
+    setIsModalAddOpen(true);
+  };
+  const handleAddOk = () => {
+    setIsModalAddOpen(false);
+  };
+  const handleAddCancel = () => {
+    setIsModalAddOpen(false);
+  };
+
   // show modal delete
   const [openDelete, setOpenDelete] = useState(false);
 
@@ -353,9 +396,20 @@ const Home = () => {
             style={{
               padding: 48,
               minHeight: 380,
+              display: "grid",
+              gap: "1.6rem 3.2rem",
             }}
           >
             <>
+              <Button
+                type="primary"
+                style={{ justifySelf: "start" }}
+                onClick={() => {
+                  showModalAdd();
+                }}
+              >
+                Add Student
+              </Button>
               <Table
                 {...tableProps}
                 pagination={{
@@ -418,23 +472,525 @@ const Home = () => {
           width={600}
           // height={600}
         >
-          <Descriptions title="User Info" layout="vertical">
-            <Descriptions.Item label="Id">51900313</Descriptions.Item>
-            <Descriptions.Item label="UserName">
-              Bach Tran Anh Duc
-            </Descriptions.Item>
-            <Descriptions.Item label="Major">
-              Information Technology
-            </Descriptions.Item>
-            <Descriptions.Item label="Khoa">23</Descriptions.Item>
-            <Descriptions.Item label="Telephone">1810000000</Descriptions.Item>
-            <Descriptions.Item label="Email">
-              anhduc@gmail.com
-            </Descriptions.Item>
-            <Descriptions.Item label="Address">
-              No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
-            </Descriptions.Item>
-          </Descriptions>
+          <Formik
+            initialValues={{
+              id: "",
+              name: "",
+              major: "",
+              age: "",
+              address: "",
+              phone: "",
+              email: "",
+            }}
+            // validationSchema={validationSchema}
+            onSubmit={async (values, actions) => {
+              console.log("Form submit");
+              // const data = {
+              //   username: username,
+              //   password: password,
+              // };
+              // window.electron.login(data);
+            }}
+          >
+            {(props) => (
+              <Form
+                onSubmit={props.handleSubmit}
+                style={{ display: "grid", gap: "2rem 0" }}
+              >
+                <Field name="id">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="id"
+                        name="id"
+                        label="ID Card"
+                        value={props.values.id}
+                        onChange={props.handleChange}
+                        error={props.touched.id && Boolean(props.errors.id)}
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.id && props.errors.id}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="name">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="name"
+                        name="name"
+                        label="Name"
+                        value={props.values.name}
+                        onChange={props.handleChange}
+                        error={props.touched.name && Boolean(props.errors.name)}
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.name && props.errors.name}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="major">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="major"
+                        name="major"
+                        label="Major"
+                        value={props.values.major}
+                        onChange={props.handleChange}
+                        error={
+                          props.touched.major && Boolean(props.errors.major)
+                        }
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.major && props.errors.major}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="age">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="age"
+                        name="age"
+                        label="Age"
+                        value={props.values.age}
+                        onChange={props.handleChange}
+                        error={props.touched.age && Boolean(props.errors.age)}
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.age && props.errors.age}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="address">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="address"
+                        name="address"
+                        label="Address"
+                        value={props.values.address}
+                        onChange={props.handleChange}
+                        error={
+                          props.touched.address && Boolean(props.errors.address)
+                        }
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.address && props.errors.address}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="phone">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="phone"
+                        name="phone"
+                        label="Phone"
+                        value={props.values.phone}
+                        onChange={props.handleChange}
+                        error={
+                          props.touched.phone && Boolean(props.errors.phone)
+                        }
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.phone && props.errors.phone}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="email">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="email"
+                        name="email"
+                        label="Email"
+                        value={props.values.email}
+                        onChange={props.handleChange}
+                        error={
+                          props.touched.email && Boolean(props.errors.email)
+                        }
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.email && props.errors.email}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <MUIButtonCustom02
+                  variant="contained"
+                  type="submit"
+                  // disabled={isCountDown}
+                  onClick={() => {}}
+                >
+                  Submit
+                </MUIButtonCustom02>
+              </Form>
+            )}
+          </Formik>
+        </Modal>
+
+        <Modal
+          title="Add Student"
+          open={isModaAddOpen}
+          onOk={handleAddOk}
+          onCancel={handleAddCancel}
+          centered
+          width={600}
+          // height={600}
+        >
+          <Formik
+            initialValues={{
+              id: "",
+              name: "",
+              major: "",
+              age: "",
+              address: "",
+              phone: "",
+              email: "",
+            }}
+            // validationSchema={validationSchema}
+            onSubmit={async (values, actions) => {
+              console.log("Form submit");
+              // const data = {
+              //   username: username,
+              //   password: password,
+              // };
+              // window.electron.login(data);
+            }}
+          >
+            {(props) => (
+              <Form
+                onSubmit={props.handleSubmit}
+                style={{ display: "grid", gap: "2rem 0" }}
+              >
+                <Field name="id">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="id"
+                        name="id"
+                        label="ID Card"
+                        value={props.values.id}
+                        onChange={props.handleChange}
+                        error={props.touched.id && Boolean(props.errors.id)}
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.id && props.errors.id}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="name">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="name"
+                        name="name"
+                        label="Name"
+                        value={props.values.name}
+                        onChange={props.handleChange}
+                        error={props.touched.name && Boolean(props.errors.name)}
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.name && props.errors.name}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="major">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="major"
+                        name="major"
+                        label="Major"
+                        value={props.values.major}
+                        onChange={props.handleChange}
+                        error={
+                          props.touched.major && Boolean(props.errors.major)
+                        }
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.major && props.errors.major}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="age">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="age"
+                        name="age"
+                        label="Age"
+                        value={props.values.age}
+                        onChange={props.handleChange}
+                        error={props.touched.age && Boolean(props.errors.age)}
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.age && props.errors.age}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="address">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="address"
+                        name="address"
+                        label="Address"
+                        value={props.values.address}
+                        onChange={props.handleChange}
+                        error={
+                          props.touched.address && Boolean(props.errors.address)
+                        }
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.address && props.errors.address}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="phone">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="phone"
+                        name="phone"
+                        label="Phone"
+                        value={props.values.phone}
+                        onChange={props.handleChange}
+                        error={
+                          props.touched.phone && Boolean(props.errors.phone)
+                        }
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.phone && props.errors.phone}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <Field name="email">
+                  {({ field, form, meta }) => (
+                    <FormControl>
+                      <MUIInputCustom02
+                        {...field}
+                        id="email"
+                        name="email"
+                        label="Email"
+                        value={props.values.email}
+                        onChange={props.handleChange}
+                        error={
+                          props.touched.email && Boolean(props.errors.email)
+                        }
+                        aria-describedby="component-helper-text"
+                        // disabled={isCountDown}
+                        // helperText={
+                        //   props.touched.id && props.errors.id
+                        // }
+                      />
+                      <FormHelperText
+                        id="component-helper-text"
+                        sx={{
+                          fontSize: "1.2rem",
+                          color: `${red[500]}`,
+                        }}
+                      >
+                        {props.touched.email && props.errors.email}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                </Field>
+
+                <MUIButtonCustom02
+                  variant="contained"
+                  type="submit"
+                  // disabled={isCountDown}
+                  onClick={() => {}}
+                >
+                  Submit
+                </MUIButtonCustom02>
+              </Form>
+            )}
+          </Formik>
         </Modal>
         <Modal
           title="Delete"

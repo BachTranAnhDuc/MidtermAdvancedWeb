@@ -126,7 +126,6 @@ const Home = () => {
     },
   ];
   const data = user;
-  console.log(user)
   // for (let i = 1; i <= 40; i++) {
   //   data.push({
   //     key: i,
@@ -358,7 +357,7 @@ const Home = () => {
                   position: [top, bottom],
                 }}
                 columns={tableColumns}
-                dataSource={hasData ? user : []}
+                dataSource={hasData ? data : []}
                 scroll={scroll}
               />
             </>

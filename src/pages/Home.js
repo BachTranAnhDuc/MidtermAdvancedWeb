@@ -40,7 +40,10 @@ const defaultFooter = () => "Here is footer";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { getAllStudent, user } = useGlobalContext();
+  const { getAllStudent, user, getSingleStudent, singleUser } =
+    useGlobalContext();
+
+  const [userTemp, setUserTemp] = useState("");
 
   const handleLogout = () => {
     navigate("/login");
@@ -97,7 +100,7 @@ const Home = () => {
     },
     {
       title: "Khoa",
-      dataIndex: "khoa",
+      dataIndex: "age",
       filters: [
         {
           text: "Information Technology",
@@ -114,9 +117,17 @@ const Home = () => {
       title: "Action",
       key: "action",
       sorter: true,
-      render: () => (
+      render: ({ key }) => (
         <Space size="middle">
-          <Button icon={<FaUser></FaUser>} onClick={showModalDetail}></Button>
+          <Button
+            icon={<FaUser></FaUser>}
+            onClick={() => {
+              showModalDetail();
+              getSingleStudent(key);
+              console.log(key);
+              // setUserTemp();
+            }}
+          ></Button>
           <Button
             icon={<FaEdit></FaEdit>}
             onClick={() => {
@@ -375,20 +386,26 @@ const Home = () => {
           // height={600}
         >
           <Descriptions title="User Info" layout="vertical">
-            <Descriptions.Item label="Id">51900313</Descriptions.Item>
+            <Descriptions.Item label="Id">
+              {singleUser ? singleUser.id : "loading"}
+            </Descriptions.Item>
             <Descriptions.Item label="UserName">
-              Bach Tran Anh Duc
+              {singleUser ? singleUser.name : "loading"}
             </Descriptions.Item>
             <Descriptions.Item label="Major">
-              Information Technology
+              {singleUser ? singleUser.major : "loading"}
             </Descriptions.Item>
-            <Descriptions.Item label="Khoa">23</Descriptions.Item>
-            <Descriptions.Item label="Telephone">1810000000</Descriptions.Item>
+            <Descriptions.Item label="Age">
+              {singleUser ? singleUser.age : "loading"}
+            </Descriptions.Item>
+            <Descriptions.Item label="Telephone">
+              {singleUser ? singleUser.phone : "loading"}
+            </Descriptions.Item>
             <Descriptions.Item label="Email">
-              anhduc@gmail.com
+              {singleUser ? singleUser.email : "loading"}
             </Descriptions.Item>
             <Descriptions.Item label="Address">
-              No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+              {singleUser ? singleUser.address : "loading"}
             </Descriptions.Item>
           </Descriptions>
         </Modal>

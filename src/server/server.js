@@ -6,6 +6,7 @@ const User = require("../model/user");
 const cors = require("cors");
 const session = require("express-session");
 const bodyParser = require("body-parser");
+const morgan = require("morgan");
 
 app.use(
   session({
@@ -16,6 +17,8 @@ app.use(
 app.use(bodyParser.urlencoded({}));
 app.use(express.json());
 app.use(cors());
+app.use(morgan("tiny"));
+
 app.get("/getListUser", async (req, res) => {
   const data = await student.find();
   if (!data) return res.json({ success: false, msg: "cannot load list user" });
@@ -88,7 +91,9 @@ app.put("/updateStudent/:id", async (req, res) => {
 
 app.get("/getDetails/:id", async (req, res) => {
   const id = req.params.id;
-  const isExist = await student.findOne({ id: id });
+  const isExist = await student.findById({ _id: id });
+
+  console.log(`id here: ${id}`);
   if (isExist === undefined || isExist === null)
     return res.json({
       success: false,

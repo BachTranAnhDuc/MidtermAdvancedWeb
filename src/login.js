@@ -7,5 +7,6 @@ contextBridge.exposeInMainWorld("electron", {
                 return user;
         },
         logout: () => ipcRenderer.send("user:logout"),
-        createStudent: (data) => ipcRenderer.send("student:create", data)
+        createStudent: (data) => ipcRenderer.send("student:create", data),
+        updateStudent: (data) => ipcRenderer.send("student:update", data)
 });

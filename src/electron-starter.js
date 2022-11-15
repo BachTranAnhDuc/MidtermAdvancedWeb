@@ -45,7 +45,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, "login.js"),
+      preload: path.join(__dirname, "render.js"),
     },
   });
   // and load the index.html of the app.
@@ -87,9 +87,12 @@ ipcMain.on("user:login", async (event, data) => {
     if(response.status === 200)
       console.log(response.data)
       mainWindow.loadURL("http://localhost:3000/")
+      return;
   })
-  .catch((error)=>{console.log(error.response.data)})
-
+  .catch((error)=>{console.log(error.response.data)
+    event.reply("loginFail", error.response.data) 
+    return;
+  })
   // const checkUser = await User.findOne({username: data.username})
   // if(checkUser == null || checkUser == undefined) {
   //   return console.log("Not exists")

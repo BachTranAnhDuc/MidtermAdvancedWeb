@@ -45,7 +45,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, "login.js"),
+      preload: path.join(__dirname, "render.js"),
     },
   });
   // and load the index.html of the app.
@@ -69,15 +69,30 @@ const { ipcMain } = require("electron");
 // listen event login get data from channel user:login
 ipcMain.on("user:login", async (event, data) => {
   // console.log(data)
-  const checkLogin = await axios.post("http://localhost:5000/login", {
+  // const checkLogin = await axios.post("http://localhost:5000/login", {
+  //   username: data.username,
+  //   password: data.password,
+  // });
+  // console.log(checkLogin.status)
+  // if (checkLogin.status === 200) {
+  //   mainWindow.loadURL("http://localhost:3000/"); // after login success redirect to homepage
+  // } else {
+  //   const msg = checkLogin.data.msg;
+  //   console.log("MSG" ,msg);
+  // }
+  axios.post("http://localhost:5000/login",{
     username: data.username,
     password: data.password,
-  });
-  if (checkLogin.data.success === true) {
-    mainWindow.loadURL("http://localhost:3000/"); // after login success redirect to homepage
-  } else {
-    const msg = checkLogin.data.msg;
-  }
+  }).then((response)=>{
+    if(response.status === 200)
+      console.log(response.data)
+      mainWindow.loadURL("http://localhost:3000/")
+      return;
+  })
+  .catch((error)=>{console.log(error.response.data)
+    event.reply("loginFail", error.response.data) 
+    return;
+  })
   // const checkUser = await User.findOne({username: data.username})
   // if(checkUser == null || checkUser == undefined) {
   //   return console.log("Not exists")

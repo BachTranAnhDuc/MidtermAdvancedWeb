@@ -85,8 +85,9 @@ const Login = () => {
               username: values.username,
               password: values.password,
             };
-            window.electron.login(data);
-
+            await window.electron.login(data);
+            const msg = await window.electron.loginFail()
+            
             // login(
             //   {
             //     username: values.username,
@@ -106,7 +107,7 @@ const Login = () => {
               >
                 Login
               </HeadingPrimary>
-              <div className="login__form--alert-container">
+              <div className="login__form--alert-container" id="login__form--alert-container">
                 <Alert
                   severity="error"
                   sx={{ fontSize: "1.4rem" }}

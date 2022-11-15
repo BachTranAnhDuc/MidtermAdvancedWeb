@@ -7,6 +7,7 @@ const cors = require("cors");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const statusCode = require("http-status-codes")
 
 app.use(
   session({
@@ -21,8 +22,8 @@ app.use(morgan("tiny"));
 
 app.get("/getListUser", async (req, res) => {
   const data = await student.find();
-  if (!data) return res.json({ success: false, msg: "cannot load list user" });
-  return res.json({
+  if (!data) return res.status(statusCode.INTERNAL_SERVER_ERROR).json({ success: false, msg: "cannot load list user" });
+  return res.status(statusCode.OK).json({
     success: true,
     msg: "Get list user success",
     listUser: data,
@@ -33,18 +34,17 @@ app.post("/login", async (req, res) => {
   const data = req.body;
   // console.log(data)
   const user = await User.findOne({ username: data.username });
-  console.log(user);
-  if (user === null || user === undefined)
-    return res.json({ success: false, msg: "This user is not exists" });
-  req.session.username = user.username;
-  return res.json({ success: true, msg: "Login success" });
+  if (user === null || user === undefined){
+    return res.status(statusCode.BAD_REQUEST).json({ success: false, msg: "This user is not exists" });
+  }
+  return res.status(statusCode.OK).json({ success: true, msg: "Login success" });
 });
 
 app.post("/addNewStudent", async (req, res) => {
   const data = req.body;
   const isExist = await student.findOne({ id: data.id });
   if (isExist)
-    return res.json({
+    return res.status(statusCode.BAD_REQUEST).json({
       success: false,
       msg: "Create student fail this student is exists",
     });
@@ -55,38 +55,41 @@ app.post("/addNewStudent", async (req, res) => {
     age: data.age,
     address: data.address,
     phone: data.phone,
+    email: data.email,
   });
-  return res.json({ success: true, msg: "Create student success" });
+  return res.status(statusCode.CREATED).json({ success: true, msg: "Create student success" });
 });
 
 app.delete("/deleteStudent/:id", async (req, res) => {
   const id = req.params.id;
   const isExist = await student.findOne({ id: id });
   if (isExist === undefined || isExist === null)
-    return res.json({
+    return res.status(statusCode.BAD_REQUEST).json({
       success: false,
       msg: `Delete student id ${id} fail, not exist in database`,
     });
   isExist.deleteOne();
-  return res.json({ success: true, msg: `Delete student id ${id} success` });
+  return res.status(statusCode.ACCEPTED).json({ success: true, msg: `Delete student id ${id} success` });
 });
 
 app.put("/updateStudent/:id", async (req, res) => {
   const id = req.params.id;
   const data = req.body;
-  const isExist = await student.findOne({ id: id });
+  const isExist = await student.findOne({ _id: id });
   if (isExist === undefined || isExist === null)
-    return res.json({
+    return res.status(statusCode.BAD_REQUEST).json({
       success: false,
       msg: `Update student id ${id} fail, not exist in database`,
     });
+  isExist.id = data.id
   isExist.name = data.name;
   isExist.major = data.major;
   isExist.age = data.age;
   isExist.address = data.address;
   isExist.phone = data.phone;
+  isExist.email = data.email;
   isExist.save();
-  return res.json({ success: true, msg: `Update student id ${id} success` });
+  return res.status(statusCode.CREATED).json({ success: true, msg: `Update student id ${id} success` });
 });
 
 app.get("/getDetails/:id", async (req, res) => {
@@ -95,11 +98,11 @@ app.get("/getDetails/:id", async (req, res) => {
 
   console.log(`id here: ${id}`);
   if (isExist === undefined || isExist === null)
-    return res.json({
+    return res.status(statusCode.BAD_REQUEST).json({
       success: false,
       msg: `Get student id ${id} fail, not exist in database`,
     });
-  return res.json({
+  return res.status(statusCode.OK).json({
     success: true,
     msg: `Get student id ${id} success`,
     data: isExist,

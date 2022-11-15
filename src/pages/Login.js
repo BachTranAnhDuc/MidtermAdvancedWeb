@@ -38,6 +38,8 @@ import {
   Checkbox,
 } from "@mui/material";
 
+import { message, Space } from "antd";
+
 import { HeadingPrimary, DefaultParagraph } from "../theme/Typography";
 
 import { Link } from "react-router-dom";

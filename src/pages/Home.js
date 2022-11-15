@@ -163,6 +163,7 @@ const Home = () => {
             icon={<FaEdit></FaEdit>}
             onClick={() => {
               showModalEdit();
+              getSingleStudent(key);
             }}
           ></Button>
           <Button icon={<FaTrash></FaTrash>} onClick={confirm}></Button>
@@ -474,17 +475,26 @@ const Home = () => {
         >
           <Formik
             initialValues={{
-              id: "",
-              name: "",
-              major: "",
-              age: "",
-              address: "",
-              phone: "",
-              email: "",
+              // id: singleUser.id || "",
+              // name: singleUser.name || "",
+              // major: singleUser.major || "",
+              // age: singleUser.age || "",
+              // address: singleUser.address || "",
+              // phone: singleUser.phone || "",
+              // email: singleUser.email || "",
+              id: singleUser ? singleUser.id : "",
+              name: singleUser ? singleUser.name : "",
+              major: singleUser ? singleUser.major : "",
+              age: singleUser ? singleUser.age : "",
+              address: singleUser ? singleUser.address : "",
+              phone: singleUser ? singleUser.phone : "",
+              email: singleUser ? singleUser.email : "",
             }}
             // validationSchema={validationSchema}
             onSubmit={async (values, actions) => {
               console.log("Form submit");
+
+              console.log(values);
               // const data = {
               //   username: username,
               //   password: password,

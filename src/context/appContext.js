@@ -4,6 +4,8 @@ import axios from "axios";
 import { GET_ALL_USER, GET_SINGLE_USER } from "./action";
 import student from "../model/student";
 
+import { message, Space } from "antd";
+
 const defaultState = {
   user: [],
   singleUser: null,

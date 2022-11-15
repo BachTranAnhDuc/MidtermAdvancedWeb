@@ -1,19 +1,25 @@
 const electron = require("electron");
 // Module to control application life.
 const app = electron.app;
+const session = electron.session;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const url = require("url");
-const connectDB = require('./db/connect')
-const dotenv = require('dotenv')
-const axios = require('axios')
+const connectDB = require("./db/connect");
+const dotenv = require("dotenv");
+const axios = require("axios");
 dotenv.config();
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-const User = require('./model/user')
+const User = require("./model/user");
 let mainWindow;
-const student = require('./model/student')
+const student = require("./model/student");
+
+const {
+  default: installExtension,
+  REACT_DEVELOPER_TOOLS,
+} = require("electron-devtools-installer");
 
 /* const start = async () => {
   try{
@@ -26,7 +32,11 @@ const student = require('./model/student')
 
 start() */
 
-
+app.whenReady().then(() => {
+  installExtension(REACT_DEVELOPER_TOOLS)
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log("An error occurred: ", err));
+});
 
 function createWindow() {
   // Create the browser window.
@@ -36,13 +46,12 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, "login.js"),
-    }
+    },
   });
   // and load the index.html of the app.
   mainWindow.loadURL("http://localhost:3000/login");
 
-
-  let server = require("./server/server")
+  let server = require("./server/server");
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
   // Emitted when the window is closed.
@@ -54,23 +63,20 @@ function createWindow() {
   });
 }
 
-
-// LOGIN 
+// LOGIN
 const { ipcMain } = require("electron");
 
 // listen event login get data from channel user:login
 ipcMain.on("user:login", async (event, data) => {
   // console.log(data)
-  const checkLogin = await axios.post("http://localhost:5000/login",
-    {
-      username: data.username,
-      password: data.password
-    })
-  if(checkLogin.data.success === true) {
-    mainWindow.loadURL("http://localhost:3000/") // after login success redirect to homepage
-  }
-  else{
-    const msg = checkLogin.data.msg
+  const checkLogin = await axios.post("http://localhost:5000/login", {
+    username: data.username,
+    password: data.password,
+  });
+  if (checkLogin.data.success === true) {
+    mainWindow.loadURL("http://localhost:3000/"); // after login success redirect to homepage
+  } else {
+    const msg = checkLogin.data.msg;
   }
   // const checkUser = await User.findOne({username: data.username})
   // if(checkUser == null || checkUser == undefined) {
@@ -81,23 +87,22 @@ ipcMain.on("user:login", async (event, data) => {
   // if(!isMatch)
   //   return console.log("Password is not correct")
   // console.log("Login success")
-})
-
+});
 
 // STUDENT
 //listen event create new student
 ipcMain.on("student:create", async (event, data) => {
-  console.log(data)
+  console.log(data);
   const postCreate = await axios.post("http://localhost:5000/addNewStudent", {
     id: data.id,
     name: data.name,
     major: data.major,
     age: data.age,
     address: data.address,
-    phone: data.phone
-  })
+    phone: data.phone,
+  });
   return;
-})
+});
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -120,6 +125,14 @@ app.on("activate", function () {
   }
 });
 
+// const reactDevToolsPath = path.join(
+//   os.homedir(),
+//   "C:Users/btanh/AppData/Local/Google/Chrome/User Data/Default/Extensions/nmmhkkegccagdldgiimedpiccmgmieda"
+// );
+
+// app.whenReady().then(async () => {
+//   await session.defaultSession.loadExtension(reactDevToolsPath);
+// });
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // import { Box, Button } from "@mui/material";
 
@@ -59,7 +59,7 @@ const Home = () => {
   const columns = [
     {
       title: "ID Card",
-      dataIndex: "idCard",
+      dataIndex: "id",
       sorter: (a, b) => a.age - b.age,
     },
     {
@@ -276,6 +276,10 @@ const Home = () => {
   const hideModalDelete = () => {
     setOpenDelete(false);
   };
+
+  useEffect(() => {
+    getAllStudent();
+  }, []);
 
   return (
     <HomeStyled>

@@ -21,6 +21,12 @@ const AppProvider = ({ children }) => {
       const { data } = res;
       const { msg, listUser } = data;
       console.log(listUser);
+
+      for (let i = 0; i < listUser.length; i++) {
+        listUser[i].key = listUser[i]._id;
+        listUser[i].khoa = 23;
+      }
+
       dispatch({ type: GET_ALL_USER, payload: listUser });
     } catch (err) {
       console.log(err);

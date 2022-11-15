@@ -48,8 +48,6 @@ import { red } from "@mui/material/colors";
 
 import { useNavigate } from "react-router-dom";
 
-import { useGlobalContext } from "../context/appContext";
-
 const Login = () => {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const { getAllStudent } = useGlobalContext();

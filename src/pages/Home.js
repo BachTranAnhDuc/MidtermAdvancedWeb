@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // import { Box, Button } from "@mui/material";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context/appContext";
 
-import { ConsoleSqlOutlined, DownOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import {
+  ConsoleSqlOutlined,
+  DownOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
 import {
   Form,
   Radio,
@@ -36,9 +40,8 @@ const defaultFooter = () => "Here is footer";
 
 const Home = () => {
   const navigate = useNavigate();
-  const {getAllStudent, user} = useGlobalContext()
-  getAllStudent()
-  
+  const { getAllStudent, user } = useGlobalContext();
+
   const handleLogout = () => {
     navigate("/login");
   };
@@ -56,7 +59,7 @@ const Home = () => {
   const columns = [
     {
       title: "ID Card",
-      dataIndex: "idCard",
+      dataIndex: "id",
       sorter: (a, b) => a.age - b.age,
     },
     {
@@ -125,17 +128,6 @@ const Home = () => {
       ),
     },
   ];
-  const data = user;
-  // for (let i = 1; i <= 40; i++) {
-  //   data.push({
-  //     key: i,
-  //     idCard: `ID ${i}`,
-  //     name: "John Brown",
-  //     major: "Information Technology",
-  //     khoa: "23",
-  //     description: `My name is John Brown, I am ${i}2 years old, living in New York No. ${i} Lake Park.`,
-  //   });
-  // }
 
   const [bordered, setBordered] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -230,9 +222,7 @@ const Home = () => {
         // >
         //   1st menu item
         // </a>
-        <Button>
-          AAAAA
-        </Button>
+        <Button>AAAAA</Button>
       ),
     },
     {
@@ -286,6 +276,10 @@ const Home = () => {
   const hideModalDelete = () => {
     setOpenDelete(false);
   };
+
+  useEffect(() => {
+    getAllStudent();
+  }, []);
 
   return (
     <HomeStyled>
@@ -357,7 +351,7 @@ const Home = () => {
                   position: [top, bottom],
                 }}
                 columns={tableColumns}
-                dataSource={hasData ? data : []}
+                dataSource={hasData ? user : []}
                 scroll={scroll}
               />
             </>

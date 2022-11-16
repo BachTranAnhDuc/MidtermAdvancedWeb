@@ -38,6 +38,9 @@ import {
   Checkbox,
 } from "@mui/material";
 
+import LoadingButton from "@mui/lab/LoadingButton";
+import SaveIcon from "@mui/icons-material/Save";
+
 import { message, Space } from "antd";
 
 import { HeadingPrimary, DefaultParagraph } from "../theme/Typography";
@@ -52,7 +55,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
-  const { getAllStudent } = useGlobalContext();
+  const { getAllStudent, login, isLoadingForm } = useGlobalContext();
   const navigate = useNavigate();
 
   const setCloseAlertLogin = () => {};
@@ -67,6 +70,10 @@ const Login = () => {
       error = "Nice try!";
     }
     return error;
+  };
+
+  const logginSuccess = () => {
+    navigate("/");
   };
 
   return (
@@ -85,9 +92,9 @@ const Login = () => {
               username: values.username,
               password: values.password,
             };
-            await window.electron.login(data);
-            const msg = await window.electron.loginFail()
-            
+            // await window.electron.login(data);
+            // const msg = await window.electron.loginFail();
+
             // login(
             //   {
             //     username: values.username,
@@ -96,6 +103,7 @@ const Login = () => {
             //   actions,
             //   loginSuccess
             // );
+            login(data, logginSuccess);
           }}
         >
           {(props) => (
@@ -107,7 +115,10 @@ const Login = () => {
               >
                 Login
               </HeadingPrimary>
-              <div className="login__form--alert-container" id="login__form--alert-container">
+              {/* <div
+                className="login__form--alert-container"
+                id="login__form--alert-container"
+              >
                 <Alert
                   severity="error"
                   sx={{ fontSize: "1.4rem" }}
@@ -127,7 +138,7 @@ const Login = () => {
                   <AlertTitle sx={{ fontSize: "1.4rem" }}>Error</AlertTitle>
                   Your account is blocked <strong>forever</strong>
                 </Alert>
-              </div>
+              </div> */}
               <Field name="username" validate={validateUsername}>
                 {({ field, form, meta }) => (
                   <FormControl>
@@ -209,9 +220,9 @@ const Login = () => {
                 )}
               </Field>
 
-              {/* {isLoadingForm ? (
+              {isLoadingForm ? (
                 <MUIButtonLoading01
-                  endIcon={<SendIcon />}
+                  endIcon={<SaveIcon />}
                   loading={isLoadingForm}
                   loadingPosition="end"
                   variant="contained"
@@ -222,13 +233,13 @@ const Login = () => {
                 <MUIButtonCustom02
                   variant="contained"
                   type="submit"
-                  disabled={isCountDown}
+                  // disabled={isCountDown}
                 >
                   Login
                 </MUIButtonCustom02>
-              )} */}
+              )}
 
-              <MUIButtonCustom02
+              {/* <MUIButtonCustom02
                 variant="contained"
                 type="submit"
                 // disabled={isCountDown}
@@ -237,7 +248,7 @@ const Login = () => {
                 }}
               >
                 Login
-              </MUIButtonCustom02>
+              </MUIButtonCustom02> */}
 
               <Box
                 sx={{

@@ -45,6 +45,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
+
       preload: path.join(__dirname, "render.js"),
     },
   });
@@ -80,19 +81,26 @@ ipcMain.on("user:login", async (event, data) => {
   //   const msg = checkLogin.data.msg;
   //   console.log("MSG" ,msg);
   // }
-  axios.post("http://localhost:5000/login",{
-    username: data.username,
-    password: data.password,
-  }).then((response)=>{
-    if(response.status === 200)
-      console.log(response.data)
-      mainWindow.loadURL("http://localhost:3000/")
-      return;
-  })
-  .catch((error)=>{console.log(error.response.data)
-    event.reply("loginFail", error.response.data) 
-    return;
-  })
+  //
+  axios
+    .post("http://localhost:5000/login", {
+      username: data.username,
+      password: data.password,
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        console.log(response.data);
+      }
+      mainWindow.loadURL("http://localhost:3000/");
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Electron catch error here");
+      console.log(error.response.data);
+      event.reply("loginFail", error.response.data);
+      return error.response.data;
+    });
+  //
   // const checkUser = await User.findOne({username: data.username})
   // if(checkUser == null || checkUser == undefined) {
   //   return console.log("Not exists")
@@ -102,6 +110,23 @@ ipcMain.on("user:login", async (event, data) => {
   // if(!isMatch)
   //   return console.log("Password is not correct")
   // console.log("Login success")
+
+  // await axios.post("http://localhost:5000/login", {
+  //   username: data.username,
+  //   password: data.password,
+  // });
+});
+
+// listen event login get data from channel user:login
+// ipcMain.on("user:loggin", async (event, data) => {
+//   await axios.post("http://localhost:5000/login", {
+//     username: data.username,
+//     password: data.password,
+//   });
+// });
+
+ipcMain.on("user:logginSuccess", () => {
+  mainWindow.loadURL("http://localhost:3000/");
 });
 
 // STUDENT

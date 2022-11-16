@@ -17,6 +17,7 @@ const LoginStyle = styled.main`
 
   .login__form {
     /* background-color: ${grey[100]}; */
+    min-width: 40rem;
     background-color: #fff;
 
     border-radius: 8px;

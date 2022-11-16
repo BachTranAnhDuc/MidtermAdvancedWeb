@@ -18,7 +18,16 @@ import { message, Space } from "antd";
 
 const defaultState = {
   user: [],
-  singleUser: null,
+  userPresent: null,
+  singleUser: {
+    id: "Loading...",
+    name: "Loading...",
+    major: "Loading...",
+    age: "Loading...",
+    address: "Loading...",
+    phone: "Loading...",
+    email: "Loading...",
+  },
   msgLogin: "",
   isLoadingForm: false,
 };
@@ -56,6 +65,7 @@ const AppProvider = ({ children }) => {
 
       const { data: std } = data;
 
+      console.log("App context here");
       console.log(std);
 
       dispatch({ type: GET_SINGLE_USER, payload: std });

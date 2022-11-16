@@ -94,7 +94,7 @@ app.post("/addNewStudent", async (req, res) => {
 
 app.delete("/deleteStudent/:id", async (req, res) => {
   const id = req.params.id;
-  const isExist = await student.findOne({ id: id });
+  const isExist = await student.findOne({ id: Number(id) });
   if (isExist === undefined || isExist === null)
     return res.status(StatusCodes.BAD_REQUEST).json({
       success: false,
@@ -110,7 +110,7 @@ app.patch("/updateStudent/:id", async (req, res) => {
   const id = req.params.id;
   const data = req.body;
   const isExist = await student.findOne({ id: Number(id) });
-  console.log("Student" ,isExist);
+  console.log("Student", isExist);
   if (isExist === undefined || isExist === null)
     return res.status(StatusCodes.BAD_REQUEST).json({
       success: false,
@@ -122,12 +122,32 @@ app.patch("/updateStudent/:id", async (req, res) => {
   //     msg: `Update student id ${isExist.id} fail, the student id ${data.id} is exist please use another id`,
   //   });
   // }
-  isExist.name = data.name;
-  isExist.major = data.major;
-  isExist.age = data.age;
-  isExist.address = data.address;
-  isExist.phone = data.phone;
-  isExist.email = data.email;
+  // isExist.name = data.name;
+  // isExist.major = data.major;
+  // isExist.age = data.age;
+  // isExist.address = data.address;
+  // isExist.phone = data.phone;
+  // isExist.email = data.email;
+
+  if (data.name) {
+    isExist.name = data.name;
+  }
+  if (data.major) {
+    isExist.major = data.major;
+  }
+  if (data.age) {
+    isExist.age = data.age;
+  }
+  if (data.address) {
+    isExist.address = data.address;
+  }
+  if (data.phone) {
+    isExist.phone = data.phone;
+  }
+  if (data.email) {
+    isExist.email = data.email;
+  }
+
   isExist.save();
   return res
     .status(StatusCodes.CREATED)

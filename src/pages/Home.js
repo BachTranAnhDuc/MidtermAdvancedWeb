@@ -23,7 +23,7 @@ import {
 } from "antd";
 import HomeStyled from "../theme/pages/Home";
 
-import { Breadcrumb, Layout, Menu } from "antd";
+import { Breadcrumb, Layout, Menu, Popconfirm } from "antd";
 
 import { FaUserCircle, FaEdit, FaUser, FaTrash } from "react-icons/fa";
 
@@ -80,14 +80,31 @@ const Home = () => {
     navigate("/login");
   };
 
-  const confirm = () => {
-    Modal.confirm({
-      title: "Confirm",
-      icon: <ExclamationCircleOutlined />,
-      content: "Are you sure ?",
-      okText: "Delete",
-      cancelText: "Cancel",
-    });
+  // const confirm = () => {
+  //   Modal.confirm({
+  //     title: "Confirm",
+  //     icon: <ExclamationCircleOutlined />,
+  //     content: "Are you sure ?",
+  //     okText: "Delete",
+  //     cancelText: "Cancel",
+  //   });
+  // };
+
+  const confirm = (e) => {
+    console.log(e);
+    console.log("You click confirm");
+
+    const data = { id: singleUser.id };
+
+    window.electron.deleteStudent(data);
+    // message.success("Click on Yes");
+  };
+
+  const cancel = (e) => {
+    console.log(e);
+
+    console.log("you click cancel");
+    // message.error("Click on No");
   };
 
   const columns = [
@@ -166,7 +183,23 @@ const Home = () => {
               getSingleStudent(key);
             }}
           ></Button>
-          <Button icon={<FaTrash></FaTrash>} onClick={confirm}></Button>
+
+          <Popconfirm
+            title="Are you sure to delete this task?"
+            onConfirm={confirm}
+            onCancel={cancel}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              icon={<FaTrash></FaTrash>}
+              onClick={() => {
+                getSingleStudent(key);
+                console.log(key);
+              }}
+            ></Button>
+          </Popconfirm>
+          {/* <Button icon={<FaTrash></FaTrash>} onClick={confirm}></Button> */}
         </Space>
       ),
     },
@@ -255,33 +288,33 @@ const Home = () => {
   };
 
   const items = [
+    // {
+    //   key: "1",
+    //   label: (
+    //     // <a
+    //     //   target="_blank"
+    //     //   rel="noopener noreferrer"
+    //     //   href="https://www.antgroup.com"
+    //     // >
+    //     //   1st menu item
+    //     // </a>
+    //     <Button>AAAAA</Button>
+    //   ),
+    // },
+    // {
+    //   key: "2",
+    //   label: (
+    //     <a
+    //       target="_blank"
+    //       rel="noopener noreferrer"
+    //       href="https://www.aliyun.com"
+    //     >
+    //       2nd menu item
+    //     </a>
+    //   ),
+    // },
     {
       key: "1",
-      label: (
-        // <a
-        //   target="_blank"
-        //   rel="noopener noreferrer"
-        //   href="https://www.antgroup.com"
-        // >
-        //   1st menu item
-        // </a>
-        <Button>AAAAA</Button>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.aliyun.com"
-        >
-          2nd menu item
-        </a>
-      ),
-    },
-    {
-      key: "3",
       label: <Link to={"/login"}>Logout</Link>,
     },
   ];
@@ -301,6 +334,9 @@ const Home = () => {
   const [isModaEditOpen, setIsModalEditOpen] = useState(false);
   const showModalEdit = () => {
     setIsModalEditOpen(true);
+
+    console.log("Single user here");
+    console.log(singleUser);
   };
   const handleEditOk = () => {
     setIsModalEditOpen(false);
@@ -329,8 +365,65 @@ const Home = () => {
   };
 
   const hideModalDelete = () => {
-    console.log("HREE")
+    console.log("HREE");
     setOpenDelete(false);
+  };
+
+  const validateUsername = (value) => {
+    let error;
+    if (!value) {
+      error = "Name is required!";
+    }
+
+    return error;
+  };
+  const validateId = (value) => {
+    let error;
+    if (!value) {
+      error = "Id is required!";
+    }
+
+    return error;
+  };
+  const validateMajor = (value) => {
+    let error;
+    if (!value) {
+      error = "Major is required!";
+    }
+
+    return error;
+  };
+  const validateAge = (value) => {
+    let error;
+    if (!value) {
+      error = "Age is required!";
+    }
+
+    return error;
+  };
+  const validateAddress = (value) => {
+    let error;
+    if (!value) {
+      error = "Address is required!";
+    }
+
+    return error;
+  };
+  const validatePhone = (value) => {
+    let error;
+    if (!value) {
+      error = "Phone is required!";
+    }
+
+    return error;
+  };
+  const validateEmail = (value) => {
+    let error;
+    if (!value) {
+      error = "Email is required!";
+    }
+
+    return error;
   };
 
   useEffect(() => {
@@ -357,11 +450,8 @@ const Home = () => {
             theme="dark"
             // style={{ backgroundColor: "var(--color-secondary)" }}
             mode="horizontal"
-            defaultSelectedKeys={["2"]}
-            items={[
-              { key: 1, label: "Home" },
-              { key: 2, label: "About me" },
-            ]}
+            defaultSelectedKeys={["1"]}
+            items={[{ key: 1, label: "Home" }]}
           />
 
           <Dropdown
@@ -390,8 +480,8 @@ const Home = () => {
             }}
           >
             <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
+            {/* <Breadcrumb.Item>List</Breadcrumb.Item>
+            <Breadcrumb.Item>App</Breadcrumb.Item> */}
           </Breadcrumb>
           <div
             className="site-layout-background"
@@ -465,6 +555,7 @@ const Home = () => {
             </Descriptions.Item>
           </Descriptions>
         </Modal>
+
         <Modal
           title="Edit"
           open={isModaEditOpen}
@@ -473,23 +564,33 @@ const Home = () => {
           centered
           width={600}
           // height={600}
+          footer={[
+            <Button
+              type="primary"
+              key="edit"
+              // loading={loading}
+              onClick={handleEditCancel}
+            >
+              Cancel
+            </Button>,
+          ]}
         >
           <Formik
             initialValues={{
-              // id: singleUser.id || "",
-              // name: singleUser.name || "",
-              // major: singleUser.major || "",
-              // age: singleUser.age || "",
-              // address: singleUser.address || "",
-              // phone: singleUser.phone || "",
-              // email: singleUser.email || "",
-              id: singleUser ? singleUser.id : "",
-              name: singleUser ? singleUser.name : "",
-              major: singleUser ? singleUser.major : "",
-              age: singleUser ? singleUser.age : "",
-              address: singleUser ? singleUser.address : "",
-              phone: singleUser ? singleUser.phone : "",
-              email: singleUser ? singleUser.email : "",
+              id: "",
+              name: "",
+              major: "",
+              age: "",
+              address: "",
+              phone: "",
+              email: "",
+              // id: singleUser ? singleUser.id : "is loading",
+              // name: singleUser ? singleUser.name : "",
+              // major: singleUser ? singleUser.major : "",
+              // age: singleUser ? singleUser.age : "",
+              // address: singleUser ? singleUser.address : "",
+              // phone: singleUser ? singleUser.phone : "",
+              // email: singleUser ? singleUser.email : "",
             }}
             // validationSchema={validationSchema}
             onSubmit={async (values, actions) => {
@@ -501,8 +602,8 @@ const Home = () => {
                 age: values.age,
                 address: values.address,
                 phone: values.phone,
-                email: values.email
-              }
+                email: values.email,
+              };
               window.electron.updateStudent(data);
               // const data = {
               //   username: username,
@@ -524,7 +625,9 @@ const Home = () => {
                         id="id"
                         name="id"
                         label="ID Card"
-                        value={props.values.id}
+                        value={
+                          props.values.id ? props.values.id : singleUser.id
+                        }
                         onChange={props.handleChange}
                         error={props.touched.id && Boolean(props.errors.id)}
                         aria-describedby="component-helper-text"
@@ -554,7 +657,11 @@ const Home = () => {
                         id="name"
                         name="name"
                         label="Name"
-                        value={props.values.name}
+                        value={
+                          props.values.name
+                            ? props.values.name
+                            : singleUser.name
+                        }
                         onChange={props.handleChange}
                         error={props.touched.name && Boolean(props.errors.name)}
                         aria-describedby="component-helper-text"
@@ -584,7 +691,11 @@ const Home = () => {
                         id="major"
                         name="major"
                         label="Major"
-                        value={props.values.major}
+                        value={
+                          props.values.major
+                            ? props.values.major
+                            : singleUser.major
+                        }
                         onChange={props.handleChange}
                         error={
                           props.touched.major && Boolean(props.errors.major)
@@ -616,7 +727,9 @@ const Home = () => {
                         id="age"
                         name="age"
                         label="Age"
-                        value={props.values.age}
+                        value={
+                          props.values.age ? props.values.age : singleUser.age
+                        }
                         onChange={props.handleChange}
                         error={props.touched.age && Boolean(props.errors.age)}
                         aria-describedby="component-helper-text"
@@ -646,7 +759,11 @@ const Home = () => {
                         id="address"
                         name="address"
                         label="Address"
-                        value={props.values.address}
+                        value={
+                          props.values.address
+                            ? props.values.address
+                            : singleUser.address
+                        }
                         onChange={props.handleChange}
                         error={
                           props.touched.address && Boolean(props.errors.address)
@@ -678,7 +795,11 @@ const Home = () => {
                         id="phone"
                         name="phone"
                         label="Phone"
-                        value={props.values.phone}
+                        value={
+                          props.values.phone
+                            ? props.values.phone
+                            : singleUser.phone
+                        }
                         onChange={props.handleChange}
                         error={
                           props.touched.phone && Boolean(props.errors.phone)
@@ -710,7 +831,11 @@ const Home = () => {
                         id="email"
                         name="email"
                         label="Email"
-                        value={props.values.email}
+                        value={
+                          props.values.email
+                            ? props.values.email
+                            : singleUser.email
+                        }
                         onChange={props.handleChange}
                         error={
                           props.touched.email && Boolean(props.errors.email)
@@ -755,6 +880,16 @@ const Home = () => {
           centered
           width={600}
           // height={600}
+          footer={[
+            <Button
+              type="primary"
+              key="link"
+              // loading={loading}
+              onClick={handleAddCancel}
+            >
+              Cancel
+            </Button>,
+          ]}
         >
           <Formik
             initialValues={{
@@ -775,9 +910,9 @@ const Home = () => {
                 age: values.age,
                 address: values.address,
                 phone: values.phone,
-                email: values.email
-              }
-              window.electron.createStudent(data)
+                email: values.email,
+              };
+              window.electron.createStudent(data);
               console.log("Form submit");
               // const data = {
               //   username: username,
@@ -791,7 +926,7 @@ const Home = () => {
                 onSubmit={props.handleSubmit}
                 style={{ display: "grid", gap: "2rem 0" }}
               >
-                <Field name="id">
+                <Field name="id" validate={validateId}>
                   {({ field, form, meta }) => (
                     <FormControl>
                       <MUIInputCustom02
@@ -821,7 +956,7 @@ const Home = () => {
                   )}
                 </Field>
 
-                <Field name="name">
+                <Field name="name" validate={validateUsername}>
                   {({ field, form, meta }) => (
                     <FormControl>
                       <MUIInputCustom02
@@ -851,7 +986,7 @@ const Home = () => {
                   )}
                 </Field>
 
-                <Field name="major">
+                <Field name="major" validate={validateMajor}>
                   {({ field, form, meta }) => (
                     <FormControl>
                       <MUIInputCustom02
@@ -883,7 +1018,7 @@ const Home = () => {
                   )}
                 </Field>
 
-                <Field name="age">
+                <Field name="age" validate={validateAge}>
                   {({ field, form, meta }) => (
                     <FormControl>
                       <MUIInputCustom02
@@ -913,7 +1048,7 @@ const Home = () => {
                   )}
                 </Field>
 
-                <Field name="address">
+                <Field name="address" validate={validateAddress}>
                   {({ field, form, meta }) => (
                     <FormControl>
                       <MUIInputCustom02
@@ -945,7 +1080,7 @@ const Home = () => {
                   )}
                 </Field>
 
-                <Field name="phone">
+                <Field name="phone" validate={validatePhone}>
                   {({ field, form, meta }) => (
                     <FormControl>
                       <MUIInputCustom02
@@ -977,7 +1112,7 @@ const Home = () => {
                   )}
                 </Field>
 
-                <Field name="email">
+                <Field name="email" validate={validateEmail}>
                   {({ field, form, meta }) => (
                     <FormControl>
                       <MUIInputCustom02
@@ -1021,7 +1156,7 @@ const Home = () => {
             )}
           </Formik>
         </Modal>
-        <Modal
+        {/* <Modal
           title="Delete"
           open={openDelete}
           onOk={hideModalDelete}
@@ -1033,7 +1168,7 @@ const Home = () => {
           <p>Bla bla ...</p>
           <p>Bla bla ...</p>
           <p>Bla bla ...</p>
-        </Modal>
+        </Modal> */}
       </Layout>
     </HomeStyled>
   );

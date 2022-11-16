@@ -15,7 +15,7 @@ dotenv.config();
 const User = require("./model/user");
 let mainWindow;
 const student = require("./model/student");
-const { dialog } = require('electron');
+const { dialog } = require("electron");
 
 const {
   default: installExtension,
@@ -134,63 +134,73 @@ ipcMain.on("user:logginSuccess", () => {
 // STUDENT
 //listen event create new student
 ipcMain.on("student:create", async (event, data) => {
-  axios.post("http://localhost:5000/addNewStudent", {
-    id: data.id,
-    name: data.name,
-    major: data.major,
-    age: data.age,
-    address: data.address,
-    phone: data.phone,
-  }).then(response => {
-    if(response.status === 201) {
-      mainWindow.reload()
-    }
-    return response.data
-  }).catch((error) => {
-    console.log(error.response.data)
-    const msg = error.response.data.msg
-    dialog.showErrorBox('ERROR WHEN ADD STUDENT', msg) 
-  })
+  axios
+    .post("http://localhost:5000/addNewStudent", {
+      id: data.id,
+      name: data.name,
+      major: data.major,
+      age: data.age,
+      address: data.address,
+      phone: data.phone,
+      email: data.email,
+    })
+    .then((response) => {
+      if (response.status === 201) {
+        mainWindow.reload();
+      }
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.response.data);
+      const msg = error.response.data.msg;
+      dialog.showErrorBox("ERROR WHEN ADD STUDENT", msg);
+    });
   return;
 });
 
 //update event update student
-ipcMain.on("student:update", async (event, data)=>{
-  const id = data.id
-  console.log(data)
-  console.log(id)
-  axios.patch(`http://localhost:5000/updateStudent/${id}`, {
-    id: data.id,
-    name: data.name,
-    major: data.major,
-    age: data.age,
-    address: data.address,
-    phone: data.phone,
-  }).then(response => {
-    if(response.status === 201) {
-      mainWindow.reload()
-    }
-    return response.data
-  }).catch((error) => {
-    console.log(error.response.data)
-    const msg = error.response.data.msg
-    dialog.showErrorBox('ERROR WHEN UPDATE STUDENT', msg) 
-  })
+ipcMain.on("student:update", async (event, data) => {
+  const id = data.id;
+  console.log(data);
+  console.log(id);
+  axios
+    .patch(`http://localhost:5000/updateStudent/${id}`, {
+      id: data.id,
+      name: data.name,
+      major: data.major,
+      age: data.age,
+      address: data.address,
+      phone: data.phone,
+      email: data.email,
+    })
+    .then((response) => {
+      if (response.status === 201) {
+        mainWindow.reload();
+      }
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.response.data);
+      const msg = error.response.data.msg;
+      dialog.showErrorBox("ERROR WHEN UPDATE STUDENT", msg);
+    });
   return;
-})
+});
 
-ipcMain.on("student:delete", async(event, data) => {
-  const id = data.id
-  axios.delete(`http://localhost:5000/updateStudent/${id}`).then(response=>{
-    if(response.status === 202)
-      console.log(response.data)
-      mainWindow.reload()
-    return;
-  }).catch(err =>{
-    const msg = err.response.data.msg
-    dialog.showErrorBox('ERROR WHEN DELETE STUDENT', msg) 
-  })
-})
+ipcMain.on("student:delete", async (event, data) => {
+  const id = data.id;
+  axios
+    .delete(`http://localhost:5000/deleteStudent/${id}`)
+    .then((response) => {
+      if (response.status === 202) console.log(response.data);
+      mainWindow.reload();
+      return;
+    })
+    .catch((err) => {
+      const msg = err.response.data.msg;
+      dialog.showErrorBox("ERROR WHEN DELETE STUDENT", msg);
+    });
+});
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

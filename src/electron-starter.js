@@ -181,7 +181,7 @@ ipcMain.on("student:update", async (event, data)=>{
 
 ipcMain.on("student:delete", async(event, data) => {
   const id = data.id
-  axios.delete(`http://localhost:5000/updateStudent/${id}`).then(response=>{
+  axios.delete(`http://localhost:5000/deleteStudent/${id}`).then(response=>{
     if(response.status === 202)
       console.log(response.data)
       mainWindow.reload()

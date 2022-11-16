@@ -130,7 +130,7 @@ const Home = () => {
       onFilter: (value, record) => record.address.indexOf(value) === 0,
     },
     {
-      title: "Khoa",
+      title: "Age",
       dataIndex: "age",
       filters: [
         {
@@ -329,6 +329,7 @@ const Home = () => {
   };
 
   const hideModalDelete = () => {
+    console.log("HREE")
     setOpenDelete(false);
   };
 
@@ -493,8 +494,16 @@ const Home = () => {
             // validationSchema={validationSchema}
             onSubmit={async (values, actions) => {
               console.log("Form submit");
-
-              console.log(values);
+              const data = {
+                id: singleUser.id,
+                name: values.name,
+                major: values.major,
+                age: values.age,
+                address: values.address,
+                phone: values.phone,
+                email: values.email
+              }
+              window.electron.updateStudent(data);
               // const data = {
               //   username: username,
               //   password: password,
@@ -519,7 +528,7 @@ const Home = () => {
                         onChange={props.handleChange}
                         error={props.touched.id && Boolean(props.errors.id)}
                         aria-describedby="component-helper-text"
-                        // disabled={isCountDown}
+                        disabled={true}
                         // helperText={
                         //   props.touched.id && props.errors.id
                         // }
@@ -759,6 +768,16 @@ const Home = () => {
             }}
             // validationSchema={validationSchema}
             onSubmit={async (values, actions) => {
+              const data = {
+                id: values.id,
+                name: values.name,
+                major: values.major,
+                age: values.age,
+                address: values.address,
+                phone: values.phone,
+                email: values.email
+              }
+              window.electron.createStudent(data)
               console.log("Form submit");
               // const data = {
               //   username: username,

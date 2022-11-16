@@ -53,6 +53,7 @@ import { red } from "@mui/material/colors";
 
 import { useNavigate } from "react-router-dom";
 
+
 const Login = () => {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const { getAllStudent, login, isLoadingForm } = useGlobalContext();
@@ -93,7 +94,8 @@ const Login = () => {
               password: values.password,
             };
             // await window.electron.login(data);
-            // const msg = await window.electron.loginFail();
+            // const {msg} = loginFail;
+            // console.log(msg)
 
             // login(
             //   {

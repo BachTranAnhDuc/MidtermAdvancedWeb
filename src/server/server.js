@@ -76,7 +76,7 @@ app.post("/addNewStudent", async (req, res) => {
   if (isExist)
     return res.status(StatusCodes.BAD_REQUEST).json({
       success: false,
-      msg: "Create student fail this student is exists",
+      msg: `Create student fail this student id ${data.id} is exists, please use another id`,
     });
   student.create({
     id: data.id,
@@ -106,16 +106,22 @@ app.delete("/deleteStudent/:id", async (req, res) => {
     .json({ success: true, msg: `Delete student id ${id} success` });
 });
 
-app.put("/updateStudent/:id", async (req, res) => {
+app.patch("/updateStudent/:id", async (req, res) => {
   const id = req.params.id;
   const data = req.body;
-  const isExist = await student.findOne({ _id: id });
+  const isExist = await student.findOne({ id: Number(id) });
+  console.log("Student" ,isExist);
   if (isExist === undefined || isExist === null)
     return res.status(StatusCodes.BAD_REQUEST).json({
       success: false,
-      msg: `Update student id ${id} fail, not exist in database`,
+      msg: `Update student id ${isExist.id} fail, not exist in database`,
     });
-  isExist.id = data.id;
+  // if(student.find({id: data.id})){
+  //   return res.status(StatusCodes.BAD_REQUEST).json({
+  //     success: false,
+  //     msg: `Update student id ${isExist.id} fail, the student id ${data.id} is exist please use another id`,
+  //   });
+  // }
   isExist.name = data.name;
   isExist.major = data.major;
   isExist.age = data.age;

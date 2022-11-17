@@ -58,3 +58,9 @@ Edit student
 
 Delete Student
 ![Homepage](https://res.cloudinary.com/dvhgjxfum/image/upload/v1668614445/login-repo/electronjs/6_tg4qcb.png)
+
+<!-- | Option | Description |
+| ------:| -----------:|
+| data   | path to data files to supply the data that will be passed into templates. |
+| engine | engine to be used for processing templates. Handlebars is the default. |
+| ext    | extension to be used for dest files. | -->

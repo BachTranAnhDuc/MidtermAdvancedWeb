@@ -383,6 +383,10 @@ const Home = () => {
       error = "Id is required!";
     }
 
+    if (!Number.isInteger(Number(value))) {
+      error = "Id must a number!";
+    }
+
     return error;
   };
   const validateMajor = (value) => {

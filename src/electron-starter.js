@@ -67,6 +67,7 @@ function createWindow() {
 
 // LOGIN
 const { ipcMain } = require("electron");
+const {Notification} = require("electron")
 const { RocketLaunch } = require("@mui/icons-material");
 
 // listen event login get data from channel user:login
@@ -146,6 +147,8 @@ ipcMain.on("student:create", async (event, data) => {
     })
     .then((response) => {
       if (response.status === 201) {
+        const notification= new Notification({title:"Add Student success", body: "Add Student success"})
+        notification.show()
         mainWindow.reload();
       }
       return response.data;
@@ -175,6 +178,8 @@ ipcMain.on("student:update", async (event, data) => {
     })
     .then((response) => {
       if (response.status === 201) {
+        const notification= new Notification({title:"Update Student success", body: `Update student id ${data.id} success`})
+        notification.show()
         mainWindow.reload();
       }
       return response.data;
@@ -192,7 +197,10 @@ ipcMain.on("student:delete", async (event, data) => {
   axios
     .delete(`http://localhost:5000/deleteStudent/${id}`)
     .then((response) => {
-      if (response.status === 202) console.log(response.data);
+      if (response.status === 202){
+        const notification= new Notification({title:"Delete Student success", body: `Delete student id ${data.id} success`})
+        notification.show()        
+      }
       mainWindow.reload();
       return;
     })

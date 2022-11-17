@@ -78,15 +78,15 @@ app.post("/addNewStudent", async (req, res) => {
       success: false,
       msg: `Create student fail this student id ${data.id} is exists, please use another id`,
     });
-  student.create({
-    id: data.id,
-    name: data.name,
-    major: data.major,
-    age: data.age,
-    address: data.address,
-    phone: data.phone,
-    email: data.email,
-  });
+    student.create({
+      id: data.id,
+      name: data.name,
+      major: data.major,
+      age: data.age,
+      address: data.address,
+      phone: data.phone,
+      email: data.email,
+    });
   return res
     .status(StatusCodes.CREATED)
     .json({ success: true, msg: "Create student success" });
